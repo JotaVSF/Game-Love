@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz do Amor ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #fff0f5;
+            padding: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .pergunta {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #ff66b3;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #e55fa0;
+            transform: scale(1.05);
+        }
+        button:disabled {
+            opacity: 0.7;
+        }
+        #qrCodeVideo {
+            display: none;
+            margin: 40px auto;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .correto {
+            background-color: #4CAF50 !important;
+            animation: pulse 0.5s 2;
+        }
+        .incorreto {
+            background-color: #f44336 !important;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>❤️ Quiz Especial Para Você! ❤️</h1>
+    <p>Acerte até 4 de 5 perguntas para liberar seu presente surpresa!</p>
+
+    <div id="quiz-container">
+        <!-- Perguntas serão inseridas aqui pelo JavaScript -->
+    </div>
+
+    <div id="qrCodeVideo">
+        <h2>🎉 Parabéns! Você conseguiu! 🎉</h2>
+        <p style="font-size: 18px;">Escaneie este código para receber seu presente especial!</p>
+    </div>
+
+    <script>
+        // Configuração do Quiz
+        const quiz = [
+            {
+                pergunta: "1. Qual a cor favorita do seu namorado?",
+                opcoes: ["Azul", "Vermelho", "Preto"],
+                resposta: 0
+            },
+            {
+                pergunta: "2. Qual o jogador favorito dele?",
+                opcoes: ["Neymar", "Lucas Moura", "C.Ronaldo"],
+                resposta: 2
+            },
+            {
+                pergunta: "3. Qual a data de nascimento dele?",
+                opcoes: ["04/03/2001", "03/04/2001", "04/03/2000"],
+                resposta: 0
+            },
+            {
+                pergunta: "4. Qual o hobby favorito dele?",
+                opcoes: ["Cozinhar", "Jogar futebol", "Ouvir musica"],
+                resposta: 1
+            },
+            {
+                pergunta: "5. Quantos animais Moisés colocou na arca?",
+                opcoes: ["1.400 a 2.500", "2.500 a 3.500", "N/A"],
+                resposta: 2
+            }
+        ];
+
+        let acertos = 0;
+        const quizContainer = document.getElementById("quiz-container");
+        const qrCodeDiv = document.getElementById("qrCodeVideo");
+
+        // Criar o quiz dinamicamente
+        quiz.forEach((pergunta, index) => {
+            const perguntaDiv = document.createElement("div");
+            perguntaDiv.className = "pergunta";
+            perguntaDiv.setAttribute("data-pergunta-index", index); // Adiciona um atributo para identificar a pergunta
+            perguntaDiv.innerHTML = `
+                <h3>${pergunta.pergunta}</h3>
+                ${pergunta.opcoes.map((opcao, i) => `
+                    <button onclick="responder(${index}, ${i})">${opcao}</button>
+                `).join("")}
+            `;
+            quizContainer.appendChild(perguntaDiv);
+        });
+
+        // Função principal de resposta
+        function responder(perguntaIndex, opcaoIndex) {
+            const pergunta = quiz[perguntaIndex];
+            const perguntaDiv = document.querySelector(`.pergunta[data-pergunta-index="${perguntaIndex}"]`);
+            const botoes = perguntaDiv.querySelectorAll("button");
+            
+            // Desabilita todos os botões da pergunta
+            botoes.forEach(btn => btn.disabled = true);
+            
+            // Marca a pergunta como respondida
+            perguntaDiv.classList.add("respondida");
+
+            // Verifica resposta
+            if (opcaoIndex === pergunta.resposta) {
+                botoes[opcaoIndex].classList.add("correto");
+                acertos++;
+            } else {
+                botoes[opcaoIndex].classList.add("incorreto");
+                botoes[pergunta.resposta].classList.add("correto");
+            }
+            
+            // Verifica se todas foram respondidas
+            verificarFimDoQuiz();
+        }
+
+        // Verifica se o quiz terminou
+    function verificarFimDoQuiz() {
+        const totalRespondidas = document.querySelectorAll(".pergunta.respondida").length;
+        
+        console.log("Total respondidas:", totalRespondidas); // Debug
+        console.log("Acertos:", acertos); // Debug
+        
+        if (totalRespondidas === quiz.length) {
+            console.log("Todas respondidas!"); // Debug
+            setTimeout(() => {
+                if (acertos >= 4) {
+                    console.log("Mostrando QR Code..."); // Debug
+                    
+                    // Cria a imagem do QR Code dinamicamente
+                    const qrCodeImg = document.createElement("img");
+                    qrCodeImg.src = "qr_code_youtube.png";
+                    qrCodeImg.width = 250;
+                    qrCodeImg.alt = "QR Code do Presente";
+                    
+                    // Insere a imagem antes do parágrafo
+                    qrCodeDiv.insertBefore(qrCodeImg, qrCodeDiv.querySelector("p"));
+
+                    qrCodeDiv.style.display = "block";
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: "smooth"
+                    });
+                } else {
+                    const tentarNovamente = confirm(`Você acertou ${acertos} de ${quiz.length}. Quer tentar novamente?`);
+                    if (tentarNovamente) {
+                        window.location.reload();
+                    }
+                }
+            }, 1000);
+        }
+    }
+    </script>
+</body>
+</html>
