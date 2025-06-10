@@ -92,7 +92,7 @@
 
         @media (max-width: 400px) {
             button {
-                display: block; /* Botões em bloco para telas muito pequenas */
+                display: block; 
                 width: 90%;
                 margin: 5px auto;
             }
@@ -113,7 +113,7 @@
     </div>
 
     <script>
-        // Configuração do Quiz
+        
         const quiz = [
             {
                 pergunta: "1. Qual a cor favorita do seu namorado?",
@@ -150,7 +150,7 @@
         quiz.forEach((pergunta, index) => {
             const perguntaDiv = document.createElement("div");
             perguntaDiv.className = "pergunta";
-            perguntaDiv.setAttribute("data-pergunta-index", index); // Adiciona um atributo para identificar a pergunta
+            perguntaDiv.setAttribute("data-pergunta-index", index); 
             perguntaDiv.innerHTML = `
                 <h3>${pergunta.pergunta}</h3>
                 ${pergunta.opcoes.map((opcao, i) => `
@@ -160,19 +160,18 @@
             quizContainer.appendChild(perguntaDiv);
         });
 
-        // Função principal de resposta
+      
         function responder(perguntaIndex, opcaoIndex) {
             const pergunta = quiz[perguntaIndex];
             const perguntaDiv = document.querySelector(`.pergunta[data-pergunta-index="${perguntaIndex}"]`);
             const botoes = perguntaDiv.querySelectorAll("button");
             
-            // Desabilita todos os botões da pergunta
             botoes.forEach(btn => btn.disabled = true);
             
-            // Marca a pergunta como respondida
+           
             perguntaDiv.classList.add("respondida");
 
-            // Verifica resposta
+        
             if (opcaoIndex === pergunta.resposta) {
                 botoes[opcaoIndex].classList.add("correto");
                 acertos++;
@@ -181,19 +180,19 @@
                 botoes[pergunta.resposta].classList.add("correto");
             }
             
-            // Verifica se todas foram respondidas
+           
             verificarFimDoQuiz();
         }
 
-        // Verifica se o quiz terminou
+        
     function verificarFimDoQuiz() {
         const totalRespondidas = document.querySelectorAll(".pergunta.respondida").length;
         
-        console.log("Total respondidas:", totalRespondidas); // Debug
-        console.log("Acertos:", acertos); // Debug
+        console.log("Total respondidas:", totalRespondidas);
+        console.log("Acertos:", acertos); 
         
         if (totalRespondidas === quiz.length) {
-            console.log("Todas respondidas!"); // Debug
+            console.log("Todas respondidas!");
             setTimeout(() => {
                 if (acertos >= 4) {
                     console.log("Mostrando QR Code..."); // Debug
@@ -203,8 +202,14 @@
                     qrCodeImg.src = "qr_code_youtube.png";
                     qrCodeImg.width = 250;
                     qrCodeImg.alt = "QR Code do Presente";
+
+                    // Cria o link para o QR Code
+                    const qrCodeLink = document.createElement("a");
+                    qrCodeLink.href = "https://www.youtube.com/watch?v=6EEW-9NDM5k"; // Link do YouTube
+                    qrCodeLink.target = "_blank";
                     
-                    // Insere a imagem antes do parágrafo
+                    qrCodeLink.appendChild(qrCodeImg);
+                   
                     qrCodeDiv.insertBefore(qrCodeImg, qrCodeDiv.querySelector("p"));
 
                     qrCodeDiv.style.display = "block";
