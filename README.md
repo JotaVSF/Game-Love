@@ -1,4 +1,4 @@
-# 💘 Quiz Especial Para Você!
+# 💘 Quiz Especial Para Você! 💘
 
 Um quiz interativo e divertido feito com HTML, CSS e JavaScript, onde o(a) jogador(a) precisa acertar **pelo menos 4 de 5 perguntas** para desbloquear um **presente surpresa** via QR Code! 🎁
 
