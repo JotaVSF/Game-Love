@@ -6,15 +6,9 @@ Um quiz interativo e divertido feito com HTML, CSS e JavaScript, onde o(a) jogad
 
 ---
 
-## 🖼️ Prévia
-
-![preview](./qr_code_jogo.png)
-
----
-
 ## 🚀 Acesse o jogo online
 
-🔗 [Clique aqui para jogar agora](https://jogo-amor-alfa.vercel.app)
+🔗 [Clique aqui para jogar agora](https://game-love-alpha.vercel.app/)
 
 ---
 
